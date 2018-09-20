@@ -5,8 +5,5 @@ class PagoBE{ //concursos
     public $imagen;
     public $evento;
     public $asistente;
-    
-   
-
 }
 ?>
