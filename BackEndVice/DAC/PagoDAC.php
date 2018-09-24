@@ -1,9 +1,0 @@
-<?php
-class PagoDAC{ //concursos
- 
-   
-    
-   
-
-}
-?>
