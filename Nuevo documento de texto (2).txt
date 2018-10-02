@@ -1,0 +1,796 @@
+-- -----------------------------------------------------
+-- Table TipoAsistenteBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS TipoAsistenteBE ;
+
+CREATE TABLE IF NOT EXISTS TipoAsistenteBE (
+  id_TipoAs INT NOT NULL,
+  descripcion_TipoAs VARCHAR(50) NOT NULL,
+  estado_TipoAs INT NOT NULL,
+  PRIMARY KEY (id_TipoAs))
+
+
+
+-- -----------------------------------------------------
+-- Table EscuelaBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EscuelaBE ;
+
+CREATE TABLE IF NOT EXISTS EscuelaBE (
+  id_Escuela INT NOT NULL,
+  nombre_Escuela VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id_Escuela))
+
+
+
+-- -----------------------------------------------------
+-- Table PersonalBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS PersonalBE ;
+
+CREATE TABLE IF NOT EXISTS PersonalBE (
+  id_Personal INT NOT NULL,
+  dni_Personal VARCHAR(8) NOT NULL,
+  nombres_Personal VARCHAR(45) NOT NULL,
+  fecNac_Personal DATE NOT NULL,
+  apellidos_Personal VARCHAR(45) NOT NULL,
+  estado_Personal INT NOT NULL,
+  fecRegistro_Personal DATE NOT NULL,
+  usuReg_Personal INT NULL,
+  escuela_Personal INT NULL,
+  PRIMARY KEY (id_Personal),
+  INDEX fk_PersonalBE_UsuarioBE1_idx (usuReg_Personal ASC) VISIBLE,
+  INDEX fk_PersonalBE_EscuelaBE1_idx (escuela_Personal ASC) VISIBLE,
+  CONSTRAINT fk_PersonalBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Personal)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_PersonalBE_EscuelaBE1
+    FOREIGN KEY (escuela_Personal)
+    REFERENCES EscuelaBE (id_Escuela)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table PerfilBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS PerfilBE ;
+
+CREATE TABLE IF NOT EXISTS PerfilBE (
+  id_Perfil INT NOT NULL,
+  descripcion_Perfil VARCHAR(45) NOT NULL,
+  estado_Perfil INT NOT NULL,
+  fecReg_Perfil DATE NOT NULL,
+  usuReg_Perfil INT NULL,
+  PRIMARY KEY (id_Perfil),
+  INDEX fk_PerfilBE_UsuarioBE1_idx (usuReg_Perfil ASC) VISIBLE,
+  CONSTRAINT fk_PerfilBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Perfil)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table RolBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS RolBE ;
+
+CREATE TABLE IF NOT EXISTS RolBE (
+  id_Rol INT NOT NULL,
+  descripcion_Rol VARCHAR(100) NOT NULL,
+  estado_Rol INT NOT NULL,
+  PRIMARY KEY (id_Rol))
+
+
+
+-- -----------------------------------------------------
+-- Table UsuarioBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS UsuarioBE ;
+
+CREATE TABLE IF NOT EXISTS UsuarioBE (
+  id_Usu INT NOT NULL,
+  nombre_Usu VARCHAR(45) NOT NULL,
+  clave_Usu VARCHAR(45) NOT NULL,
+  estado_Usu INT NOT NULL,
+  fecReg_Usu DATE NOT NULL,
+  usuReg_Usu INT NULL,
+  personal_Usu INT NOT NULL,
+  perfil_Usu INT NOT NULL,
+  RolBE_id_rol INT NOT NULL,
+  UNIQUE INDEX id_Usu_UNIQUE (id_Usu ASC) VISIBLE,
+  PRIMARY KEY (id_Usu),
+  INDEX fk_UsuarioBE_PersonalBE1_idx (personal_Usu ASC) VISIBLE,
+  INDEX fk_UsuarioBE_PerfilBE1_idx (perfil_Usu ASC) VISIBLE,
+  INDEX fk_UsuarioBE_RolBE1_idx (RolBE_id_rol ASC) VISIBLE,
+  CONSTRAINT fk_UsuarioBE_PersonalBE1
+    FOREIGN KEY (personal_Usu)
+    REFERENCES PersonalBE (id_Personal)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_UsuarioBE_PerfilBE1
+    FOREIGN KEY (perfil_Usu)
+    REFERENCES PerfilBE (id_Perfil)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_UsuarioBE_RolBE1
+    FOREIGN KEY (RolBE_id_rol)
+    REFERENCES RolBE (id_Rol)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table AsistenteBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS AsistenteBE ;
+
+CREATE TABLE IF NOT EXISTS AsistenteBE (
+  id_Asis INT NOT NULL,
+  dni_Asis VARCHAR(8) NOT NULL,
+  nombres_Asis VARCHAR(45) NOT NULL,
+  apellidos_Asis VARCHAR(45) NOT NULL,
+  especialidad_Asis VARCHAR(45) NOT NULL,
+  universidadProc_Asis INT NOT NULL,
+  fecNac_Asis DATE NOT NULL,
+  correo_Asis VARCHAR(45) NOT NULL,
+  telefono_Asis VARCHAR(10) NOT NULL,
+  fecReg_Asis DATE NOT NULL,
+  usuReg_Asis INT NOT NULL,
+  tipoAsis_Asis INT NOT NULL,
+  PRIMARY KEY (id_Asis),
+  UNIQUE INDEX idAsistenteBE_UNIQUE (id_Asis ASC) VISIBLE,
+  UNIQUE INDEX dni_Asis_UNIQUE (dni_Asis ASC) VISIBLE,
+  INDEX fk_AsistenteBE_TipoAsistenteBE1_idx (tipoAsis_Asis ASC) VISIBLE,
+  INDEX fk_AsistenteBE_UsuarioBE1_idx (usuReg_Asis ASC) VISIBLE,
+  CONSTRAINT fk_AsistenteBE_TipoAsistenteBE1
+    FOREIGN KEY (tipoAsis_Asis)
+    REFERENCES TipoAsistenteBE (id_TipoAs)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_AsistenteBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Asis)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table ConvocatoriaBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ConvocatoriaBE ;
+
+CREATE TABLE IF NOT EXISTS ConvocatoriaBE (
+  id_Conv INT NOT NULL,
+  descripcion_Conv VARCHAR(45) NOT NULL,
+  imagen_Conv LONGBLOB NOT NULL,
+  fecha_Conv DATE NOT NULL,
+  estado_Conv INT NOT NULL,
+  usuReg_Conv INT NOT NULL,
+  fecReg_Conv DATE NOT NULL,
+  PRIMARY KEY (id_Conv),
+  UNIQUE INDEX id_Conv_UNIQUE (id_Conv ASC) VISIBLE,
+  INDEX fk_ConvocatoriaBE_UsuarioBE1_idx (usuReg_Conv ASC) VISIBLE,
+  CONSTRAINT fk_ConvocatoriaBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Conv)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table UniversidadBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS UniversidadBE ;
+
+CREATE TABLE IF NOT EXISTS UniversidadBE (
+  id_Uni INT NOT NULL,
+  nombre_Uni VARCHAR(80) NOT NULL,
+  PRIMARY KEY (id_Uni))
+
+
+
+-- -----------------------------------------------------
+-- Table EspecialidadBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EspecialidadBE ;
+
+CREATE TABLE IF NOT EXISTS EspecialidadBE (
+  id_Espe INT NOT NULL,
+  descripcion_Espe VARCHAR(45) NULL,
+  estado_Espe INT NULL,
+  PRIMARY KEY (id_Espe))
+
+
+
+-- -----------------------------------------------------
+-- Table PonenteBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS PonenteBE ;
+
+CREATE TABLE IF NOT EXISTS PonenteBE (
+  id_Ponente INT NOT NULL,
+  dni_Ponente VARCHAR(8) NOT NULL,
+  nombres_Ponente VARCHAR(50) NOT NULL,
+  apellidos_Ponente VARCHAR(50) NOT NULL,
+  especialidad_Ponente INT NOT NULL,
+  univProc_Ponente INT NOT NULL,
+  fecNac_Ponente DATE NOT NULL,
+  correo_Ponente VARCHAR(45) NOT NULL,
+  telefono_Ponente VARCHAR(45) NOT NULL,
+  usuReg_Ponente INT NOT NULL,
+  fecReg_Ponente DATE NOT NULL,
+  PRIMARY KEY (id_Ponente),
+  UNIQUE INDEX id_Ponente_UNIQUE (id_Ponente ASC) VISIBLE,
+  INDEX fk_PonenteBE_Universidad1_idx (univProc_Ponente ASC) VISIBLE,
+  INDEX fk_PonenteBE_Especialidad1_idx (especialidad_Ponente ASC) VISIBLE,
+  INDEX fk_PonenteBE_UsuarioBE1_idx (usuReg_Ponente ASC) VISIBLE,
+  CONSTRAINT fk_PonenteBE_Universidad1
+    FOREIGN KEY (univProc_Ponente)
+    REFERENCES UniversidadBE (id_Uni)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_PonenteBE_Especialidad1
+    FOREIGN KEY (especialidad_Ponente)
+    REFERENCES EspecialidadBE (id_Espe)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_PonenteBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Ponente)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table TipoEventoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS TipoEventoBE ;
+
+CREATE TABLE IF NOT EXISTS TipoEventoBE (
+  id_TipoEv INT NOT NULL,
+  descripcion_TipoEv VARCHAR(45) NULL,
+  estado_TipoEv INT NULL,
+  fecReg_TipoEv DATE NULL,
+  usuReg_TipoEv INT NULL,
+  PRIMARY KEY (id_TipoEv),
+  UNIQUE INDEX id_TipoEv_UNIQUE (id_TipoEv ASC) VISIBLE,
+  INDEX fk_TipoEventoBE_UsuarioBE1_idx (usuReg_TipoEv ASC) VISIBLE,
+  CONSTRAINT fk_TipoEventoBE_UsuarioBE1
+    FOREIGN KEY (usuReg_TipoEv)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table NoticiaBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS NoticiaBE ;
+
+CREATE TABLE IF NOT EXISTS NoticiaBE (
+  id_Noticia INT NOT NULL,
+  descripcion_Noticia VARCHAR(200) NOT NULL,
+  fecha_Noticia DATE NOT NULL,
+  estado_Noticia INT NOT NULL,
+  imagen_Noticia LONGBLOB NOT NULL,
+  usuReg_Noticia INT NOT NULL,
+  fecReg_Noticia DATE NOT NULL,
+  PRIMARY KEY (id_Noticia),
+  UNIQUE INDEX id_Noticia_UNIQUE (id_Noticia ASC) VISIBLE,
+  INDEX fk_NoticiaBE_UsuarioBE1_idx (usuReg_Noticia ASC) VISIBLE,
+  CONSTRAINT fk_NoticiaBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Noticia)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table NosotrosBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS NosotrosBE ;
+
+CREATE TABLE IF NOT EXISTS NosotrosBE (
+  id_Nos INT NOT NULL,
+  descripcion_Nos VARCHAR(200) NOT NULL,
+  vision_Nos VARCHAR(200) NOT NULL,
+  mision_Nos VARCHAR(200) NOT NULL,
+  organigrama_Nos LONGBLOB NOT NULL,
+  directorio_Nos LONGBLOB NOT NULL,
+  estado_Nos INT NOT NULL,
+  usuMod_Nos INT NOT NULL,
+  fecMod_Nos DATE NOT NULL,
+  PRIMARY KEY (id_Nos),
+  INDEX fk_NosotrosBE_UsuarioBE1_idx (usuMod_Nos ASC) VISIBLE,
+  CONSTRAINT fk_NosotrosBE_UsuarioBE1
+    FOREIGN KEY (usuMod_Nos)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table EventoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EventoBE ;
+
+CREATE TABLE IF NOT EXISTS EventoBE (
+  id_Evento INT NOT NULL,
+  nombre_Evento VARCHAR(45) NOT NULL,
+  descripcion_Evento VARCHAR(200) NOT NULL,
+  tipo_Evento INT NOT NULL,
+  duracion_Evento VARCHAR(20) NOT NULL,
+  fecInicio_Evento DATE NOT NULL,
+  fecFin_Evento DATE NOT NULL,
+  horaInicio_Evento VARCHAR(20) NOT NULL,
+  horaFin_Evento VARCHAR(20) NOT NULL,
+  cstGSnCertificado_Evento DECIMAL(5,2) NOT NULL,
+  cstGCnCertificado_Evento DECIMAL(5,2) NOT NULL,
+  cstFCnCertificado_Evento DECIMAL(5,2) NOT NULL,
+  detalle_Evento INT NOT NULL,
+  imagen_Evento LONGBLOB NOT NULL,
+  usuReg_Evento INT NOT NULL,
+  fecReg_Evento DATE NOT NULL,
+  PRIMARY KEY (id_Evento),
+  UNIQUE INDEX id_Evento_UNIQUE (id_Evento ASC) VISIBLE,
+  INDEX fk_EventoBE_TipoEventoBE_idx (tipo_Evento ASC) VISIBLE,
+  INDEX fk_EventoBE_UsuarioBE1_idx (usuReg_Evento ASC) VISIBLE,
+  CONSTRAINT fk_EventoBE_TipoEventoBE
+    FOREIGN KEY (tipo_Evento)
+    REFERENCES TipoEventoBE (id_TipoEv)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_EventoBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Evento)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table EventoDetalleBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EventoDetalleBE ;
+
+CREATE TABLE IF NOT EXISTS EventoDetalleBE (
+  id_EventoDet INT NOT NULL,
+  descripcion_EventoDet VARCHAR(45) NOT NULL,
+  evento_EventoDet INT NOT NULL,
+  ponente_EventoDet INT NOT NULL,
+  estado_EventoDet INT NOT NULL,
+  fecReg_EventoDet DATE NOT NULL,
+  usuReg_EventoDet INT NOT NULL,
+  PRIMARY KEY (id_EventoDet),
+  UNIQUE INDEX id_EventoDet_UNIQUE (id_EventoDet ASC) VISIBLE,
+  INDEX fk_EventoDetalleBE_EventoBE1_idx (evento_EventoDet ASC) VISIBLE,
+  INDEX fk_EventoDetalleBE_PonenteBE1_idx (ponente_EventoDet ASC) VISIBLE,
+  INDEX fk_EventoDetalleBE_UsuarioBE1_idx (usuReg_EventoDet ASC) VISIBLE,
+  CONSTRAINT fk_EventoDetalleBE_EventoBE1
+    FOREIGN KEY (evento_EventoDet)
+    REFERENCES EventoBE (id_Evento)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_EventoDetalleBE_PonenteBE1
+    FOREIGN KEY (ponente_EventoDet)
+    REFERENCES PonenteBE (id_Ponente)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_EventoDetalleBE_UsuarioBE1
+    FOREIGN KEY (usuReg_EventoDet)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table EventoAsitenteBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EventoAsitenteBE ;
+
+CREATE TABLE IF NOT EXISTS EventoAsitenteBE (
+  id_EventoAsis INT NOT NULL,
+  evento_EventoAsis INT NULL,
+  asistente_EventoAsis INT NULL,
+  PRIMARY KEY (id_EventoAsis),
+  INDEX fk_EventoAsitente_EventoBE1_idx (evento_EventoAsis ASC) VISIBLE,
+  INDEX fk_EventoAsitente_AsistenteBE1_idx (asistente_EventoAsis ASC) VISIBLE,
+  CONSTRAINT fk_EventoAsitente_EventoBE1
+    FOREIGN KEY (evento_EventoAsis)
+    REFERENCES EventoBE (id_Evento)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_EventoAsitente_AsistenteBE1
+    FOREIGN KEY (asistente_EventoAsis)
+    REFERENCES AsistenteBE (id_Asis)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table PagoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS PagoBE ;
+
+CREATE TABLE IF NOT EXISTS PagoBE (
+  id_Pago INT NOT NULL,
+  imagen_Pago LONGBLOB NOT NULL,
+  eventoAsis_Pago INT NOT NULL,
+  estado_Pago INT NOT NULL,
+  usuApr_Pago INT NOT NULL,
+  fecha_Pago DATE NOT NULL,
+  fechaApr_Pago DATE NOT NULL,
+  PRIMARY KEY (id_Pago),
+  UNIQUE INDEX id_Pago_UNIQUE (id_Pago ASC) VISIBLE,
+  INDEX fk_PagoBE_EventoAsitente1_idx (eventoAsis_Pago ASC) VISIBLE,
+  INDEX fk_PagoBE_UsuarioBE1_idx (usuApr_Pago ASC) VISIBLE,
+  CONSTRAINT fk_PagoBE_EventoAsitente1
+    FOREIGN KEY (eventoAsis_Pago)
+    REFERENCES EventoAsitenteBE (id_EventoAsis)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_PagoBE_UsuarioBE1
+    FOREIGN KEY (usuApr_Pago)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table ResultadoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ResultadoBE ;
+
+CREATE TABLE IF NOT EXISTS ResultadoBE (
+  id_Resultado INT NOT NULL,
+  descripcion_Resultado VARCHAR(150) NOT NULL,
+  imagen_Resultado LONGBLOB NOT NULL,
+  concurso_Resultado INT NOT NULL,
+  estado_Resultado INT NOT NULL,
+  usuReg_Resultado INT NOT NULL,
+  fecReg_Resultado DATE NOT NULL,
+  PRIMARY KEY (id_Resultado),
+  INDEX fk_ResultadoBE_ConvocatoriaBE1_idx (concurso_Resultado ASC) VISIBLE,
+  INDEX fk_ResultadoBE_UsuarioBE1_idx (usuReg_Resultado ASC) VISIBLE,
+  CONSTRAINT fk_ResultadoBE_ConvocatoriaBE1
+    FOREIGN KEY (concurso_Resultado)
+    REFERENCES ConvocatoriaBE (id_Conv)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_ResultadoBE_UsuarioBE1
+    FOREIGN KEY (usuReg_Resultado)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table ProfesionBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ProfesionBE ;
+
+CREATE TABLE IF NOT EXISTS ProfesionBE (
+  id_Prof INT NOT NULL,
+  nombre_Prof VARCHAR(80) NOT NULL,
+  PRIMARY KEY (id_Prof))
+
+
+
+-- -----------------------------------------------------
+-- Table SuscriptorBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS SuscriptorBE ;
+
+CREATE TABLE IF NOT EXISTS SuscriptorBE (
+  id_Susc INT NOT NULL,
+  nombres_Susc VARCHAR(45) NOT NULL,
+  apellidos_Susc VARCHAR(45) NOT NULL,
+  correo_Susc VARCHAR(45) NOT NULL,
+  estado_Susc INT NOT NULL,
+  entidad_Susc VARCHAR(70) NULL,
+  profesion_Susc INT NULL,
+  PRIMARY KEY (id_Susc),
+  UNIQUE INDEX id_Suscriptor_UNIQUE (id_Susc ASC) VISIBLE,
+  INDEX fk_SuscriptorBE_ProfesionBE1_idx (profesion_Susc ASC) VISIBLE,
+  CONSTRAINT fk_SuscriptorBE_ProfesionBE1
+    FOREIGN KEY (profesion_Susc)
+    REFERENCES ProfesionBE (id_Prof)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table ProyectoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ProyectoBE ;
+
+CREATE TABLE IF NOT EXISTS ProyectoBE (
+  id_Proyecto INT NOT NULL,
+  titulo_Proyecto VARCHAR(200) NOT NULL,
+  descripcion_Proyecto VARCHAR(200) NOT NULL,
+  presupuesto_Proyecto DECIMAL(9,2) NOT NULL,
+  enlace_Proyecto VARCHAR(60) NOT NULL,
+  usuReg INT NULL,
+  fecReg DATE NOT NULL,
+  PRIMARY KEY (id_Proyecto),
+  INDEX fk_ProyectoBE_UsuarioBE1_idx (usuReg ASC) VISIBLE,
+  CONSTRAINT fk_ProyectoBE_UsuarioBE1
+    FOREIGN KEY (usuReg)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table EntidadColaBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EntidadColaBE ;
+
+CREATE TABLE IF NOT EXISTS EntidadColaBE (
+  id_EntidadCola INT NOT NULL,
+  nombre VARCHAR(45) NOT NULL,
+  descripcion VARCHAR(45) NOT NULL,
+  usuReg INT NOT NULL,
+  fecReg DATE NOT NULL,
+  PRIMARY KEY (id_EntidadCola))
+
+
+
+-- -----------------------------------------------------
+-- Table ObjetivoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ObjetivoBE ;
+
+CREATE TABLE IF NOT EXISTS ObjetivoBE (
+  id_Objetivo INT NOT NULL,
+  descripcion VARCHAR(200) NOT NULL,
+  PRIMARY KEY (id_Objetivo))
+
+
+
+-- -----------------------------------------------------
+-- Table ObjetivoPryBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ObjetivoPryBE ;
+
+CREATE TABLE IF NOT EXISTS ObjetivoPryBE (
+  id_ObjetivoPry INT NOT NULL,
+  proyecto_ObjetivoPry INT NOT NULL,
+  objetivo_ObjetivoPry INT NOT NULL,
+  PRIMARY KEY (id_ObjetivoPry),
+  INDEX fk_ObjetivoPryBE_ObjetivoBE1_idx (objetivo_ObjetivoPry ASC) VISIBLE,
+  INDEX fk_ObjetivoPryBE_ProyectoBE1_idx (proyecto_ObjetivoPry ASC) VISIBLE,
+  CONSTRAINT fk_ObjetivoPryBE_ObjetivoBE1
+    FOREIGN KEY (objetivo_ObjetivoPry)
+    REFERENCES ObjetivoBE (id_Objetivo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_ObjetivoPryBE_ProyectoBE1
+    FOREIGN KEY (proyecto_ObjetivoPry)
+    REFERENCES ProyectoBE (id_Proyecto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table EntidadCProyBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EntidadCProyBE ;
+
+CREATE TABLE IF NOT EXISTS EntidadCProyBE (
+  id_ECP INT NOT NULL,
+  proyecto_ECP INT NOT NULL,
+  entidadC_ECP INT NOT NULL,
+  PRIMARY KEY (id_ECP),
+  INDEX fk_EntidadCProyBE_EntidadColaBE1_idx (entidadC_ECP ASC) VISIBLE,
+  INDEX fk_EntidadCProyBE_ProyectoBE1_idx (proyecto_ECP ASC) VISIBLE,
+  CONSTRAINT fk_EntidadCProyBE_EntidadColaBE1
+    FOREIGN KEY (entidadC_ECP)
+    REFERENCES EntidadColaBE (id_EntidadCola)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_EntidadCProyBE_ProyectoBE1
+    FOREIGN KEY (proyecto_ECP)
+    REFERENCES ProyectoBE (id_Proyecto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table ComunidadAutoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ComunidadAutoBE ;
+
+CREATE TABLE IF NOT EXISTS ComunidadAutoBE (
+  id_CA INT NOT NULL,
+  proyecto_CA INT NOT NULL,
+  comunidadA_CA INT NOT NULL,
+  usuReg INT NOT NULL,
+  fecReg DATE NOT NULL,
+  PRIMARY KEY (id_CA))
+
+
+
+-- -----------------------------------------------------
+-- Table FechaEjeBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS FechaEjeBE ;
+
+CREATE TABLE IF NOT EXISTS FechaEjeBE (
+  id_FE INT NOT NULL,
+  actividad_FE VARCHAR(150) NOT NULL,
+  fecha DATE NOT NULL,
+  PRIMARY KEY (id_FE))
+
+
+
+-- -----------------------------------------------------
+-- Table ComunidadProyBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ComunidadProyBE ;
+
+CREATE TABLE IF NOT EXISTS ComunidadProyBE (
+  id_CP INT NOT NULL,
+  proyecto_CP INT NOT NULL,
+  comunidad_CP INT NOT NULL,
+  PRIMARY KEY (id_CP),
+  INDEX fk_ComunidadProyBE_ComunidadAutoBE1_idx (comunidad_CP ASC) VISIBLE,
+  INDEX fk_ComunidadProyBE_ProyectoBE1_idx (proyecto_CP ASC) VISIBLE,
+  CONSTRAINT fk_ComunidadProyBE_ComunidadAutoBE1
+    FOREIGN KEY (comunidad_CP)
+    REFERENCES ComunidadAutoBE (id_CA)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_ComunidadProyBE_ProyectoBE1
+    FOREIGN KEY (proyecto_CP)
+    REFERENCES ProyectoBE (id_Proyecto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table FechaProyBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS FechaProyBE ;
+
+CREATE TABLE IF NOT EXISTS FechaProyBE (
+  id_FP INT NOT NULL,
+  proyecto_FP INT NOT NULL,
+  fechaEje_FP INT NOT NULL,
+  PRIMARY KEY (id_FP),
+  INDEX fk_FechaProyBE_FechaEjeBE1_idx (fechaEje_FP ASC) VISIBLE,
+  INDEX fk_FechaProyBE_ProyectoBE1_idx (proyecto_FP ASC) VISIBLE,
+  CONSTRAINT fk_FechaProyBE_FechaEjeBE1
+    FOREIGN KEY (fechaEje_FP)
+    REFERENCES FechaEjeBE (id_FE)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_FechaProyBE_ProyectoBE1
+    FOREIGN KEY (proyecto_FP)
+    REFERENCES ProyectoBE (id_Proyecto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table ResolucionBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ResolucionBE ;
+
+CREATE TABLE IF NOT EXISTS ResolucionBE (
+  id_Resolucion INT NOT NULL,
+  descripcion_Resolucion VARCHAR(200) NOT NULL,
+  archivo_Resolucion LONGBLOB NOT NULL,
+  usuReg INT NOT NULL,
+  fecReg DATE NOT NULL,
+  PRIMARY KEY (id_Resolucion),
+  INDEX fk_Resolucion_UsuarioBE1_idx (usuReg ASC) VISIBLE,
+  CONSTRAINT fk_Resolucion_UsuarioBE1
+    FOREIGN KEY (usuReg)
+    REFERENCES UsuarioBE (id_Usu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table TesisBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS TesisBE ;
+
+CREATE TABLE IF NOT EXISTS TesisBE (
+  id_Tesis INT NOT NULL,
+  titulo_Tesis VARCHAR(45) NOT NULL,
+  escuela_Tesis INT NOT NULL,
+  fecha_Tesis DATE NOT NULL,
+  PRIMARY KEY (id_Tesis))
+
+
+
+-- -----------------------------------------------------
+-- Table EscuelaTesisBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS EscuelaTesisBE ;
+
+CREATE TABLE IF NOT EXISTS EscuelaTesisBE (
+  id_ET INT NOT NULL,
+  tesis_ET INT NOT NULL,
+  escuela_ET INT NOT NULL,
+  PRIMARY KEY (id_ET),
+  INDEX fk_EscuelaTesisBE_TesisBE1_idx (tesis_ET ASC) VISIBLE,
+  INDEX fk_EscuelaTesisBE_EscuelasBE1_idx (escuela_ET ASC) VISIBLE,
+  CONSTRAINT fk_EscuelaTesisBE_TesisBE1
+    FOREIGN KEY (tesis_ET)
+    REFERENCES TesisBE (id_Tesis)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_EscuelaTesisBE_EscuelasBE1
+    FOREIGN KEY (escuela_ET)
+    REFERENCES EscuelaBE (id_Escuela)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
+
+-- -----------------------------------------------------
+-- Table MenuBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS MenuBE ;
+
+CREATE TABLE IF NOT EXISTS MenuBE (
+  id_Menu INT NOT NULL,
+  descripcion_Menu VARCHAR(45) NOT NULL,
+  direccion_Menu VARCHAR(45) NOT NULL,
+  estado_Menu VARCHAR(45) NOT NULL,
+  padre_Menu INT NULL,
+  PRIMARY KEY (id_Menu))
+
+
+
+-- -----------------------------------------------------
+-- Table AccesoBE
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS AccesoBE ;
+
+CREATE TABLE IF NOT EXISTS AccesoBE (
+  id_acc INT NOT NULL,
+  descripcion_acc VARCHAR(100) NOT NULL,
+  estado_acc INT NOT NULL,
+  menu_acc INT NOT NULL,
+  rol_acc INT NOT NULL,
+  PRIMARY KEY (id_acc),
+  INDEX fk_AccesoBE_MenuBE1_idx (menu_acc ASC) VISIBLE,
+  INDEX fk_AccesoBE_RolBE1_idx (rol_acc ASC) VISIBLE,
+  CONSTRAINT fk_AccesoBE_MenuBE1
+    FOREIGN KEY (menu_acc)
+    REFERENCES MenuBE (id_Menu)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_AccesoBE_RolBE1
+    FOREIGN KEY (rol_acc)
+    REFERENCES RolBE (id_Rol)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
