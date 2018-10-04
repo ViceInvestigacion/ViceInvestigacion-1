@@ -1,14 +1,14 @@
 --Insert Menu--
-INSERT INTO  menuBE VALUES(1,'Inicio','unjsfc/Inicio',1,NULL);
+INSERT INTO  menuBE VALUES('Inicio','unjsfc/Inicio',1,NULL);
 
 --Insert Rol
-INSERT INTO  rolBE VALUES(1,'ADMINISTRADOR',1);
+INSERT INTO  rolBE VALUES('ADMINISTRADOR',1);
 
 --Insert Acceso--
-INSERT INTO  accesoBE VALUES(1,'ADMIN-INICIO',1,1,1);
+INSERT INTO  accesoBE VALUES('ADMIN-INICIO',1,1,1);
 
 --Insert Tipo Asistente
-INSERT INTO  tipoAsistenteBE VALUES(1,'GENERAL',1);
+INSERT INTO  tipoAsistenteBE VALUES('GENERAL',1);
 
 --Insert Facultad
 INSERT INTO  facultadBE VALUES(

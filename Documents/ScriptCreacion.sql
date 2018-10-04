@@ -7,7 +7,7 @@ go
 --descripcion: Aqui se registraran los menus que van a ser utilizados 
 --
 CREATE TABLE menuBE (
-  id_Menu INT NOT NULL,
+  id_Menu INT IDENTITY(1,1) NOT NULL,
   descripcion_Menu varchar(45) NOT NULL,
   direccion_Menu varchar(45) NOT NULL,
   estado_Menu INT NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE menuBE (
 --descripcion: Aqui se registraran los roles de los usuarios
 --
 CREATE TABLE rolBE (
-  id_Rol INT NOT NULL,
+  id_Rol INT IDENTITY(1,1) NOT NULL,
   descripcion_Rol varchar(100) NOT NULL,
   estado_Rol INT NOT NULL,
   PRIMARY KEY (id_Rol)
@@ -28,7 +28,7 @@ CREATE TABLE rolBE (
 --descripcion: Tabla intermedia entre rol y menu para definir los accesos de cada rol
 --
 CREATE TABLE accesoBE (
-  id_acc INT NOT NULL,
+  id_acc INT IDENTITY(1,1) NOT NULL,
   descripcion_acc varchar(100) NOT NULL,
   estado_acc INT NOT NULL,
   id_Menu INT NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE accesoBE (
 --descripcion: Aqui se registraran los tipos de asistentes a los eventos
 --General, Alumno
 CREATE TABLE tipoAsistenteBE (
-  id_TipoAs INT NOT NULL,
+  id_TipoAs INT IDENTITY(1,1) NOT NULL,
   descripcion_TipoAs varchar(50) NOT NULL,
   estado_TipoAs INT NOT NULL,
   PRIMARY KEY (id_TipoAs)
@@ -50,7 +50,7 @@ CREATE TABLE tipoAsistenteBE (
 --descripcion: Todas las facultad de la UNJFSC
 --
 CREATE TABLE facultadBE (
-  id_Facu INT NOT NULL,
+  id_Facu INT IDENTITY(1,1) NOT NULL,
   nombre_Facu varchar(100) NOT NULL,
   PRIMARY KEY (id_Facu)
 ) ;
@@ -58,7 +58,7 @@ CREATE TABLE facultadBE (
 --descripcion: Todas las escuelas de la UNJFSC
 --
 CREATE TABLE escuelaBE (
-  id_Escuela INT NOT NULL,
+  id_Escuela INT IDENTITY(1,1) NOT NULL,
   nombre_Escuela varchar(100) NOT NULL,
   facultadId_Escuela INT NOT NULL,
   PRIMARY KEY (id_Escuela),
@@ -68,7 +68,7 @@ CREATE TABLE escuelaBE (
 --descripcion: nombre del pesonal que estará a cargo de la cuenta de usuario
 --
 CREATE TABLE personalBE (
-  id_Personal INT NOT NULL,
+  id_Personal INT IDENTITY(1,1) NOT NULL,
   dni_Personal varchar(8) NOT NULL,
   nombres_Personal varchar(45) NOT NULL,
   fecNac_Personal date NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE personalBE (
 --descripcion: usuarios para acceder al sistema
 --
 CREATE TABLE usuarioBE (
-  id_Usu INT NOT NULL,
+  id_Usu INT IDENTITY(1,1) NOT NULL,
   nombre_Usu varchar(45) NOT NULL,
   clave_Usu varchar(45) NOT NULL,
   estado_Usu INT NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE usuarioBE (
 --descripcion: asistentes a los eventos
 --
 CREATE TABLE asistenteBE (
-  id_Asis INT NOT NULL,
+  id_Asis INT IDENTITY(1,1) NOT NULL,
   dni_Asis varchar(8) NOT NULL,
   nombres_Asis varchar(45) NOT NULL,
   apellidos_Asis varchar(45) NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE asistenteBE (
 --descripcion: proyectos de los docentes y alumnos de la UNJFSC
 --
 CREATE TABLE proyectoBE (
-  id_Proyecto INT NOT NULL,
+  id_Proyecto INT IDENTITY(1,1) NOT NULL,
   titulo_Proyecto varchar(200) NOT NULL,
   descripcion_Proyecto varchar(200) NOT NULL,
   presupuesto_Proyecto decimal(9,2) NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE proyectoBE (
 --descripcion: comunidades autonomas que apoyan los proyectos
 --
 CREATE TABLE comunidadAutoBE (
-  id_CA INT NOT NULL,
+  id_CA INT IDENTITY(1,1) NOT NULL,
   nombre_CA INT NOT NULL,
   usuReg INT NOT NULL,
   fecReg date NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE comunidadAutoBE (
 --descripcion: tabla intermedia entre Proyectos y Comunidades Autonomas
 --
 CREATE TABLE comunidadProyBE (
-  id_CP INT NOT NULL,
+  id_CP INT IDENTITY(1,1) NOT NULL,
   proyecto_CP INT NOT NULL,
   comunidad_CP INT NOT NULL,
   PRIMARY KEY (id_CP),
@@ -158,7 +158,7 @@ CREATE TABLE comunidadProyBE (
 --descripcion: Convocatorias a concursos 
 --
 CREATE TABLE convocatoriaBE (
-  id_Conv INT NOT NULL,
+  id_Conv INT IDENTITY(1,1) NOT NULL,
   descripcion_Conv varchar(45) NOT NULL,
   imagen_Conv varbinary(max) NOT NULL,
   fecha_Conv date NOT NULL,
@@ -172,7 +172,7 @@ CREATE TABLE convocatoriaBE (
 --descripcion: entidades Colaboradoras de los proyectos
 --
 CREATE TABLE entidadColaBE (
-  id_EntidadCola INT NOT NULL,
+  id_EntidadCola INT IDENTITY(1,1) NOT NULL,
   nombre varchar(45) NOT NULL,
   descripcion varchar(45) NOT NULL,
   usuReg INT NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE entidadColaBE (
 --descripcion: tabla intermedia entre Proyectos y Entidades Colaboradoras 
 --
 CREATE TABLE entidadCProyBE (
-  id_ECP INT NOT NULL,
+  id_ECP INT IDENTITY(1,1) NOT NULL,
   proyecto_ECP INT NOT NULL,
   entidadC_ECP INT NOT NULL,
   PRIMARY KEY (id_ECP),
@@ -194,7 +194,7 @@ CREATE TABLE entidadCProyBE (
 --descripcion: tesis de todas las facultades y escuelas 
 --
 CREATE TABLE tesisBE (
-  id_Tesis INT NOT NULL,
+  id_Tesis INT IDENTITY(1,1) NOT NULL,
   titulo_Tesis varchar(45) NOT NULL,
   escuela_Tesis INT NOT NULL,
   fecha_Tesis date NOT NULL,
@@ -207,7 +207,7 @@ CREATE TABLE tesisBE (
 --descripcion: especialidades de los ponentes en los eventos
 --
 CREATE TABLE especialidadBE (
-  id_Espe INT NOT NULL,
+  id_Espe INT IDENTITY(1,1) NOT NULL,
   descripcion_Espe varchar(45) DEFAULT NULL,
   estado_Espe INT DEFAULT NULL,
   PRIMARY KEY (id_Espe)
@@ -216,7 +216,7 @@ CREATE TABLE especialidadBE (
 --descripcion: tipos de eventos  
 -- ponencias, ferias
 CREATE TABLE tipoEventoBE (
-  id_TipoEv INT NOT NULL,
+  id_TipoEv INT IDENTITY(1,1) NOT NULL,
   descripcion_TipoEv varchar(45) DEFAULT NULL,
   estado_TipoEv INT DEFAULT NULL,
   fecReg_TipoEv date DEFAULT NULL,
@@ -228,7 +228,7 @@ CREATE TABLE tipoEventoBE (
 --descripcion: eventos a realizarse
 --
 CREATE TABLE eventoBE (
-  id_Evento INT NOT NULL,
+  id_Evento INT IDENTITY(1,1) NOT NULL,
   nombre_Evento varchar(45) NOT NULL,
   descripcion_Evento varchar(200) NOT NULL,
   tipo_Evento INT NOT NULL,
@@ -252,7 +252,7 @@ CREATE TABLE eventoBE (
 --descripcion: tabla intermedia entre Evento y Asistentes
 --
 CREATE TABLE eventoAsistenteBE (
-  id_EventoAsis INT NOT NULL,
+  id_EventoAsis INT IDENTITY(1,1) NOT NULL,
   evento_EventoAsis INT DEFAULT NULL,
   asistente_EventoAsis INT DEFAULT NULL,
   PRIMARY KEY (id_EventoAsis),
@@ -263,7 +263,7 @@ CREATE TABLE eventoAsistenteBE (
 --descripcion: universidad de procedencia de los ponentes 
 --
 CREATE TABLE universidadBE (
-  id_Uni INT NOT NULL,
+  id_Uni INT IDENTITY(1,1) NOT NULL,
   nombre_Uni varchar(80) NOT NULL,
   PRIMARY KEY (id_Uni)
 ) ;
@@ -271,7 +271,7 @@ CREATE TABLE universidadBE (
 --descripcion: ponentes de los eventos
 --
 CREATE TABLE ponenteBE (
-  id_Ponente INT NOT NULL,
+  id_Ponente INT IDENTITY(1,1) NOT NULL,
   dni_Ponente varchar(8) NOT NULL,
   nombres_Ponente varchar(50) NOT NULL,
   apellidos_Ponente varchar(50) NOT NULL,
@@ -291,7 +291,7 @@ CREATE TABLE ponenteBE (
 --descripcion: tabla intermedia entre Evento y Ponentes
 --
 CREATE TABLE eventoDetalleBE (
-  id_EventoDet INT NOT NULL,
+  id_EventoDet INT IDENTITY(1,1) NOT NULL,
   descripcion_EventoDet varchar(45) NOT NULL,
   evento_EventoDet INT NOT NULL,
   ponente_EventoDet INT NOT NULL,
@@ -307,7 +307,7 @@ CREATE TABLE eventoDetalleBE (
 --descripcion: Fechas de ejecuciones de los proyectos
 --
 CREATE TABLE fechaEjeBE (
-  id_FE INT NOT NULL,
+  id_FE INT IDENTITY(1,1) NOT NULL,
   actividad_FE varchar(150) NOT NULL,
   fecha date NOT NULL,
   PRIMARY KEY (id_FE)
@@ -316,7 +316,7 @@ CREATE TABLE fechaEjeBE (
 --descripcion: tabla intermedia entre Proyecto y sus fechas de ejecuciones
 --
 CREATE TABLE fechaProyBE (
-  id_FP INT NOT NULL,
+  id_FP INT IDENTITY(1,1) NOT NULL,
   proyecto_FP INT NOT NULL,
   fechaEje_FP INT NOT NULL,
   PRIMARY KEY (id_FP),
@@ -327,7 +327,7 @@ CREATE TABLE fechaProyBE (
 --descripcion: Aqui se registrara la descripcion del Vicerrectorado
 --
 CREATE TABLE nosotrosBE (
-  id_Nos INT NOT NULL,
+  id_Nos INT IDENTITY(1,1) NOT NULL,
   descripcion_Nos varchar(200) NOT NULL,
   vision_Nos varchar(200) NOT NULL,
   mision_Nos varchar(200) NOT NULL,
@@ -343,7 +343,7 @@ CREATE TABLE nosotrosBE (
 --descripcion: Aqui se registraran las noticias
 --
 CREATE TABLE noticiaBE (
-  id_Noticia INT NOT NULL,
+  id_Noticia INT IDENTITY(1,1) NOT NULL,
   descripcion_Noticia varchar(200) NOT NULL,
   fecha_Noticia date NOT NULL,
   estado_Noticia INT NOT NULL,
@@ -357,7 +357,7 @@ CREATE TABLE noticiaBE (
 --descripcion: objetivos de los proyectos 
 --
 CREATE TABLE objetivoBE (
-  id_Objetivo INT NOT NULL,
+  id_Objetivo INT IDENTITY(1,1) NOT NULL,
   descripcion varchar(200) NOT NULL,
   PRIMARY KEY (id_Objetivo)
 ) ;
@@ -365,7 +365,7 @@ CREATE TABLE objetivoBE (
 --descripcion: tabla intermedia entre un Proeycto y sus objetivos
 --
 CREATE TABLE objetivoPryBE (
-  id_ObjetivoPry INT NOT NULL,
+  id_ObjetivoPry INT IDENTITY(1,1) NOT NULL,
   proyecto_ObjetivoPry INT NOT NULL,
   objetivo_ObjetivoPry INT NOT NULL,
   PRIMARY KEY (id_ObjetivoPry),
@@ -376,7 +376,7 @@ CREATE TABLE objetivoPryBE (
 --descripcion: pagos para asistir a los eventos
 --
 CREATE TABLE pagoBE (
-  id_Pago INT NOT NULL,
+  id_Pago INT IDENTITY(1,1) NOT NULL,
   imagen_Pago varbinary(max) NOT NULL,
   eventoAsis_Pago INT NOT NULL,
   estado_Pago INT NOT NULL,
@@ -391,7 +391,7 @@ CREATE TABLE pagoBE (
 --descripcion: profesiones de los suscriptores al boletin 
 --
 CREATE TABLE profesionBE (
-  id_Prof INT NOT NULL,
+  id_Prof INT IDENTITY(1,1) NOT NULL,
   nombre_Prof varchar(80) NOT NULL,
   PRIMARY KEY (id_Prof)
 ) ;
@@ -399,7 +399,7 @@ CREATE TABLE profesionBE (
 --descripcion: Aqui se registraran las Resoluciones del Vicerrectorado
 --
 CREATE TABLE resolucionBE (
-  id_Resolucion INT NOT NULL,
+  id_Resolucion INT IDENTITY(1,1) NOT NULL,
   descripcion_Resolucion varchar(200) NOT NULL,
   archivo_Resolucion varbinary(max) NOT NULL,
   usuReg INT NOT NULL,
@@ -411,7 +411,7 @@ CREATE TABLE resolucionBE (
 --descripcion: Aqui se registraran los resultados de los concursos
 --
 CREATE TABLE resultadoBE (
-  id_Resultado INT NOT NULL,
+  id_Resultado INT IDENTITY(1,1) NOT NULL,
   descripcion_Resultado varchar(150) NOT NULL,
   imagen_Resultado varbinary(max) NOT NULL,
   concurso_Resultado INT NOT NULL,
@@ -426,7 +426,7 @@ CREATE TABLE resultadoBE (
 --descripcion: registro de los suscriptores al boletin informativo
 --
 CREATE TABLE suscriptorBE (
-  id_Susc INT NOT NULL,
+  id_Susc INT IDENTITY(1,1) NOT NULL,
   nombres_Susc varchar(45) NOT NULL,
   apellidos_Susc varchar(45) NOT NULL,
   correo_Susc varchar(45) NOT NULL,
